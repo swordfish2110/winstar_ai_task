@@ -1,0 +1,10 @@
+argparse
+pandas
+numpy
+torch
+tensorflow
+transformers
+datasets
+scikit-learn
+Pillow
+kagglehub
