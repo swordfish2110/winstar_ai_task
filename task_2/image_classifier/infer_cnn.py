@@ -18,7 +18,7 @@ class ImageCNNWrap:
         img = image.load_img(img_path, target_size=self.target_size)
         img_array = image.img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0)
-        img_array = img_array / 255.0  # Normalize data
+        img_array = img_array / 255.0  # Normalizing data
         return img_array
     
     def predict(self, img_path):
