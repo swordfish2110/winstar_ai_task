@@ -12,7 +12,7 @@ This project demonstrates an image classification model implemented using Object
 ## Installation
 1. Clone this repository:
    ```sh
-   git clone #my repository#
+   git clone https://github.com/swordfish2110/winstar_ai_task
    ```
 2. Install required dependencies:
    ```sh
