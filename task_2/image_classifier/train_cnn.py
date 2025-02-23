@@ -45,10 +45,10 @@ class ImageClassifier:
         )
 
         test_generator = ImageDataGenerator(
-            preprocessing_function=tf.keras.applications.efficientnet.preprocess_input #Applying tf.keras.applications.efficientnet.preprocess_input for normalization
+            preprocessing_function=tf.keras.applications.efficientnet.preprocess_input # Applying tf.keras.applications.efficientnet.preprocess_input for normalization
         )
         
-        self.train_images = train_generator.flow_from_dataframe( #creating train_images
+        self.train_images = train_generator.flow_from_dataframe( # creating train_images
             dataframe=train_df,
             x_col='Filepath',
             y_col='Label',
@@ -59,7 +59,7 @@ class ImageClassifier:
             subset='training'
         )
 
-        self.validation_images = train_generator.flow_from_dataframe( #creating validation_images
+        self.validation_images = train_generator.flow_from_dataframe( # creating validation_images
             dataframe=train_df,
             x_col='Filepath',
             y_col='Label',
@@ -70,7 +70,7 @@ class ImageClassifier:
             subset='validation'
         )
 
-        self.test_images = test_generator.flow_from_dataframe( #creating test_images
+        self.test_images = test_generator.flow_from_dataframe( # creating test_images
             dataframe=test_df,
             x_col='Filepath',
             y_col='Label',
@@ -94,7 +94,7 @@ class ImageClassifier:
 
         model = models.Sequential([
             augment,
-            layers.Conv2D(32, (3, 3), activation='relu', input_shape=(224, 224, 3)), #creating convultional layer
+            layers.Conv2D(32, (3, 3), activation='relu', input_shape=(224, 224, 3)), # creating convultional layer
             layers.BatchNormalization(),
             layers.MaxPooling2D((2, 2)),
             layers.Dropout(0.25),
@@ -109,7 +109,7 @@ class ImageClassifier:
             layers.MaxPooling2D((2, 2)),
             layers.Dropout(0.25),
 
-            layers.Flatten(), #flattens the data
+            layers.Flatten(), # flattens the data
             layers.Dense(512, activation='relu'),
             layers.BatchNormalization(),
             layers.Dropout(0.5),
@@ -117,7 +117,7 @@ class ImageClassifier:
             layers.Dense(num_classes, activation='softmax')
         ])
         
-        model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy']) #compiles the model with 'Adam' optimizer and categorical_crossentropy loss function
+        model.compile(optimizer=Adam(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy']) # compiles the model with 'Adam' optimizer and categorical_crossentropy loss function
         self.model = model
 
     def train_model(self):
@@ -126,7 +126,7 @@ class ImageClassifier:
             epochs=self.epochs,
             validation_data=self.validation_images,
             verbose=1
-        ) #training the model using train_images and validation_images for a given number of epochs
+        ) # training the model using train_images and validation_images for a given number of epochs
         return history
 
     def save_model(self, save_path):

@@ -9,15 +9,15 @@ from sklearn.model_selection import train_test_split
 class NERModelTrainer:
     def __init__(self, model_name="bert-base-cased", num_examples_per_entity=50):
         self.model_name = model_name
-        self.tokenizer = BertTokenizerFast.from_pretrained(model_name) #loading the BertTokenizerFast for tokenization
+        self.tokenizer = BertTokenizerFast.from_pretrained(model_name) # loading the BertTokenizerFast for tokenization
         self.num_examples_per_entity = num_examples_per_entity
-        self.label_to_id = {} #initializing class label mappings 14,15 lanes
-        self.id_to_label = {}
+        self.label_to_id = {} # initializing class label mappings
+        self.id_to_label = {} # initializing class label mappings
         self.model = None
         self.training_args = None
         self.trainer = None
 
-    def generate_dataset(self, entities, sentence_templates): #generaying synthetic sentences
+    def generate_dataset(self, entities, sentence_templates): # generating synthetic sentences
         dataset = []
         for entity in entities:
             for _ in range(self.num_examples_per_entity):
@@ -26,7 +26,7 @@ class NERModelTrainer:
                 dataset.append({"text": sentence, "entity": entity})
         return dataset
 
-    def text_to_bio(self, text, entity): #converting text into token-level labels
+    def text_to_bio(self, text, entity): # converting text into token-level labels
         tokens = text.split()
         labels = ["O"] * len(tokens)
         entity_tokens = entity.split()
@@ -37,7 +37,7 @@ class NERModelTrainer:
         return tokens, labels
 
     def prepare_dataset(self, entities, sentence_templates):
-        dataset = self.generate_dataset(entities, sentence_templates) #creating labeled examples
+        dataset = self.generate_dataset(entities, sentence_templates) # creating labeled examples
         bio_dataset = []
         for example in dataset:
             tokens, labels = self.text_to_bio(example["text"], example["entity"])
@@ -69,8 +69,8 @@ class NERModelTrainer:
         train_dataset = Dataset.from_list(train_data).map(self.tokenize_and_align_labels, batched=False)
         eval_dataset = Dataset.from_list(eval_data).map(self.tokenize_and_align_labels, batched=False)
 
-        self.model = BertForTokenClassification.from_pretrained(self.model_name, num_labels=len(label_list)) #loading pre-trained BERT for token classification model
-        self.training_args = TrainingArguments( #defining training arguments
+        self.model = BertForTokenClassification.from_pretrained(self.model_name, num_labels=len(label_list)) # loading pre-trained BERT for token classification model
+        self.training_args = TrainingArguments( # defining training arguments
             output_dir="./ner_model",
             evaluation_strategy="epoch",
             learning_rate=2e-5,
